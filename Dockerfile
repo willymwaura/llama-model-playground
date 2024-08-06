@@ -12,10 +12,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Download the model folder from AWS S3
 # Make sure to replace the URL with your pre-signed URL
-RUN apt-get update && apt-get install -y wget
-RUN wget -O llama-2-7b.zip "https://farsightsacco.s3.us-east-2.amazonaws.com/llama-2-7b.zip"
-RUN unzip llama-2-7b.zip -d llama-2-7b
-RUN rm llama-2-7b.zip
+RUN apt-get update && apt-get install -y wget unzip && \
+    wget -O llama-2-7b.zip "https://farsightsacco.s3.us-east-2.amazonaws.com/llama-2-7b.zip" && \
+    unzip llama-2-7b.zip -d llama-2-7b && \
+    rm llama-2-7b.zip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy the current directory contents into the container at /app
 COPY . .
@@ -25,3 +27,4 @@ EXPOSE 5000
 
 # Run the application
 CMD ["python", "run.py"]
+
