@@ -25,10 +25,14 @@ RUN unzip llama-2-7b.zip -d llama-2-7b && rm llama-2-7b.zip
 # Copy the current directory contents into the container at /app
 COPY . .
 
+# Remove the existing symbolic link and create a new one for tokenizer.model
+RUN rm -f /app/llama-2-7b/tokenizer.model && ln -s /app/tokenizer.model /app/llama-2-7b/tokenizer.model
+
 # Expose port 5000 to the outside world
 EXPOSE 5000
 
 # Run the application
 CMD ["python", "run.py"]
+
 
 
